@@ -1,272 +1,118 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alia — Roblox Security & Penetration Tool</title>
 
-  <!-- Inter font -->
+  <!-- Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* Reset */
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      background: #0a0a0f;
-      color: #ddd;
-      overflow-x: hidden;
-      position: relative;
-    }
+  /* —————————— RESET & BASE —————————— */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body,html{height:100%;font-family:'Inter',sans-serif;background:#0a0a0f;color:#ddd;overflow-x:hidden}
 
-    /* Canvas background will fill entire screen */
-    #backgroundCanvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      pointer-events: none;
-      user-select: none;
-    }
+  /* —————————— CANVAS BACKGROUND —————————— */
+  #backgroundCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;pointer-events:none}
 
-    /* Container */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem 1rem 4rem;
-      text-align: center;
-    }
+  /* —————————— HAMBURGER (always visible) —————————— */
+  #hamburger{
+    position:fixed;top:18px;left:20px;z-index:1200;
+    font-size:1.9rem;line-height:1;cursor:pointer;
+    color:#fff;user-select:none;transition:transform .3s ease
+  }
+  #hamburger.active{transform:rotate(90deg)}
 
-    /* Fade + slide animations */
-    .fade-slide {
-      opacity: 0;
-      transform: translateY(20px);
-      animation-fill-mode: forwards;
-      animation-timing-function: ease-out;
-      animation-name: fadeSlideUp;
-      animation-duration: 1s;
-    }
-    .fade-slide.delay-1 {
-      animation-delay: 0.3s;
-    }
-    .fade-slide.delay-2 {
-      animation-delay: 0.6s;
-    }
-    .fade-slide.delay-3 {
-      animation-delay: 0.9s;
-    }
-    .fade-slide.delay-4 {
-      animation-delay: 1.2s;
-    }
-    @keyframes fadeSlideUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+  /* —————————— NAV BAR —————————— */
+  #navbar{
+    position:fixed;top:0;left:0;width:100%;height:60px;display:flex;
+    align-items:center;justify-content:flex-end;gap:2.5rem;
+    padding:0 1.5rem 0 70px;        /* leave space for hamburger */
+    background:rgba(15,15,25,.86);backdrop-filter:blur(6px);
+    transform:translateY(-100%);    /* hidden by default */
+    transition:transform .35s ease;z-index:1100
+  }
+  #navbar.show{transform:translateY(0)}
+  #navbar a{color:#ccc;text-decoration:none;font-weight:600;transition:color .25s}
+  #navbar a:hover{color:#fff}
 
-    /* Title */
-    h1.title {
-      font-weight: 700;
-      font-size: 4rem;
-      color: #e0e0ff;
-      margin-bottom: 0.2rem;
-      text-shadow: 0 0 12px #d76fff;
-    }
-    p.subtitle {
-      font-weight: 400;
-      font-size: 1.4rem;
-      margin-bottom: 2.5rem;
-      color: #aaa;
-    }
+  /* —————————— CONTENT FADE/SLIDE —————————— */
+  .container{max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;text-align:center}
+  .fade-slide{opacity:0;transform:translateY(20px);animation:fadeSlideUp 1s forwards ease-out}
+  .delay-1{animation-delay:.3s}.delay-2{animation-delay:.6s}.delay-3{animation-delay:.9s}.delay-4{animation-delay:1.2s}
+  @keyframes fadeSlideUp{to{opacity:1;transform:translateY(0)}}
 
-    /* Executor Image */
-    .executor-image {
-      max-width: 350px;
-      width: 100%;
-      border-radius: 16px;
-      box-shadow: 0 0 20px #ff29ffaa;
-      margin-bottom: 2.5rem;
-    }
+  h1.title{font-size:4rem;font-weight:700;color:#e0e0ff;margin:.2rem 0;text-shadow:0 0 12px #d76fff}
+  p.subtitle{font-size:1.4rem;color:#aaa;margin-bottom:2.5rem}
+  .executor-image{max-width:350px;width:100%;border-radius:16px;box-shadow:0 0 20px #ff29ffaa;margin-bottom:2.5rem}
+  .btn-download{display:inline-block;background:#7b36ff;color:#fff;font-weight:700;font-size:1.2rem;
+                padding:.85rem 3rem;border-radius:30px;text-decoration:none;box-shadow:0 0 14px #9c61ff;
+                transition:background .3s;margin-bottom:4rem}
+  .btn-download:hover{background:#a263ff}
 
-    /* Download Button */
-    .btn-download {
-      display: inline-block;
-      background: #7b36ff;
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-      padding: 0.85rem 3rem;
-      border-radius: 30px;
-      text-decoration: none;
-      box-shadow: 0 0 14px #9c61ff;
-      transition: background 0.3s ease;
-      margin-bottom: 4rem;
-    }
-    .btn-download:hover {
-      background: #a263ff;
-    }
+  /* —————————— DEV CARD —————————— */
+  .developers{max-width:400px;margin:0 auto;text-align:left;color:#ccc}
+  .dev-header{font-size:2rem;font-weight:700;color:#d792ff;text-align:center;margin:1rem 0}
+  .dev-card{display:flex;align-items:center;gap:1rem;background:rgba(80,40,120,.3);padding:1rem 1.5rem;
+            border-radius:12px;box-shadow:0 0 14px #b68bff55}
+  .dev-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #a080ff;background:#3a176a}
+  .dev-name{font-weight:700;font-size:1.2rem;color:#fff}
+  .dev-role{font-size:1rem;color:#b8a9d4}
 
-    /* Developers Section */
-    .developers {
-      text-align: left;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      color: #ccc;
-    }
-    .dev-header {
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #d792ff;
-      text-align: center;
-    }
-    .dev-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: rgba(80, 40, 120, 0.3);
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 0 14px #b68bff55;
-    }
-    .dev-info {
-      flex-grow: 1;
-    }
-    .dev-name {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #fff;
-    }
-    .dev-role {
-      font-weight: 400;
-      font-size: 1rem;
-      color: #b8a9d4;
-    }
-    .dev-photo {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #a080ff;
-      background: #3a176a;
-    }
+  /* —————————— FAQ —————————— */
+  .faq-section{max-width:700px;margin:4rem auto;color:#ddd}
+  .faq-header{font-size:2rem;font-weight:700;color:#d792ff;text-align:center;margin-bottom:1.5rem}
+  .faq-item{background:rgba(50,25,75,.4);border-radius:10px;margin-bottom:1rem;overflow:hidden;box-shadow:0 0 8px #b381ff50}
+  .faq-question{padding:1rem 1.5rem;font-weight:600;font-size:1.1rem;cursor:pointer;position:relative;color:#e0d9ff;user-select:none}
+  .faq-question::after{content:'+';position:absolute;right:1.5rem;font-size:1.4rem;font-weight:700;transition:transform .3s}
+  .faq-item.open .faq-question::after{transform:rotate(45deg)}
+  .faq-answer{max-height:0;padding:0 1.5rem;opacity:0;font-size:1rem;line-height:1.5;color:#ccc;
+              transition:max-height .4s,padding .4s,opacity .5s .15s}
+  .faq-item.open .faq-answer{max-height:220px;padding:1rem 1.5rem;opacity:1}
 
-    /* FAQ Section */
-    .faq-section {
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      color: #ddd;
-      margin-bottom: 4rem;
-    }
-    .faq-header {
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      color: #d792ff;
-      text-align: center;
-    }
-    .faq-item {
-      background: rgba(50, 25, 75, 0.4);
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      overflow: hidden;
-      box-shadow: 0 0 8px #b381ff50;
-    }
-    .faq-question {
-      cursor: pointer;
-      padding: 1rem 1.5rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      user-select: none;
-      position: relative;
-      color: #e0d9ff;
-    }
-    .faq-question::after {
-      content: '+';
-      position: absolute;
-      right: 1.5rem;
-      font-weight: 700;
-      font-size: 1.4rem;
-      transition: transform 0.3s ease;
-    }
-    .faq-item.open .faq-question::after {
-      transform: rotate(45deg);
-    }
-    .faq-answer {
-      max-height: 0;
-      padding: 0 1.5rem;
-      opacity: 0;
-      color: #ccc;
-      font-weight: 400;
-      font-size: 1rem;
-      line-height: 1.5;
-      transition:
-        max-height 0.4s ease,
-        padding 0.4s ease,
-        opacity 0.5s ease 0.15s;
-    }
-    .faq-item.open .faq-answer {
-      max-height: 200px; /* adjust if answer longer */
-      padding: 1rem 1.5rem;
-      opacity: 1;
-    }
+  /* —————————— FOOTER —————————— */
+  footer{text-align:center;padding:1.5rem;color:#666;font-size:.9rem}
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      color: #666;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .dev-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      .developers {
-        max-width: 90%;
-      }
-    }
+  /* —————————— RESPONSIVE —————————— */
+  @media(max-width:600px){
+    .dev-card{flex-direction:column;text-align:center}
+    .developers{max-width:90%}
+  }
   </style>
 </head>
 <body>
+  <!-- ALWAYS-VISIBLE HAMBURGER -->
+  <div id="hamburger">☰</div>
 
-  <!-- Canvas for animated background -->
+  <!-- NAV BAR -->
+  <nav id="navbar">
+    <a href="/download.html">Download</a>
+  </nav>
+
+  <!-- LIVE WALLPAPER CANVAS -->
   <canvas id="backgroundCanvas"></canvas>
 
+  <!-- MAIN CONTENT -->
   <div class="container">
     <h1 class="title fade-slide delay-1">Alia</h1>
     <p class="subtitle fade-slide delay-2">Roblox Security & Penetration Tool</p>
 
-    <!-- Executor image placeholder -->
-    <img src="executor-placeholder.png" alt="Alia Executor Screenshot" class="executor-image fade-slide delay-3" />
+    <img src="executor-placeholder.png" alt="Alia Executor" class="executor-image fade-slide delay-3" />
 
     <a href="/download.html" class="btn-download fade-slide delay-4">Download</a>
 
-    <!-- Developers -->
     <section class="developers fade-slide delay-4" aria-label="Developers">
       <h2 class="dev-header">Developers</h2>
       <div class="dev-card">
-        <img src="your-photo.jpg" alt="ZodaciOS" class="dev-photo" />
-        <div class="dev-info">
+        <img src="your-photo.jpg" alt="ZodaciOS" class="dev-photo">
+        <div>
           <div class="dev-name">ZodaciOS</div>
           <div class="dev-role">Main Developer</div>
         </div>
       </div>
     </section>
 
-    <!-- FAQ -->
     <section class="faq-section fade-slide delay-4" aria-label="Frequently Asked Questions">
       <h2 class="faq-header">FAQ</h2>
 
@@ -274,122 +120,83 @@
         <div class="faq-question">When will this be published?</div>
         <div class="faq-answer">Alia will be published once development is complete, which is around 2026.</div>
       </div>
-
       <div class="faq-item">
         <div class="faq-question">Will this executor be mobile only?</div>
         <div class="faq-answer">Yes. Alia does not plan on supporting PC.</div>
       </div>
-
       <div class="faq-item">
         <div class="faq-question">Will this executor be free?</div>
-        <div class="faq-answer">Yes, it will be free. However, users will need to go through a staging process as this tool is intended for developers only, wishing to test anti cheat systems, etc.</div>
+        <div class="faq-answer">Yes, it will be free. However, users will need to go through a staging process as this tool is intended for developers only, wishing to test anti-cheat systems, etc.</div>
       </div>
-
       <div class="faq-item">
-        <div class="faq-question">Whats the staging process?</div>
-        <div class="faq-answer">The staging process will be a short document filled in with questions that prove your legitimacy to what the purpose of using Alia is. Generally, we accept game developers and so on.</div>
+        <div class="faq-question">What's the staging process?</div>
+        <div class="faq-answer">A short form that proves your legitimacy (normally game developers). Accepted applicants receive access.</div>
       </div>
-
       <div class="faq-item">
         <div class="faq-question">Can I not be a developer to access this tool once released?</div>
-        <div class="faq-answer">We will not allow any private use to our executor. Alia is created to be a private, undetectable executor used for good intentions.</div>
+        <div class="faq-answer">No. Alia is a private, undetectable executor intended solely for ethical research.</div>
       </div>
-
     </section>
   </div>
 
-  <footer>
-    2025 - Alia. All rights reserved.
-  </footer>
+  <footer>2025 – Alia. All rights reserved.</footer>
 
+  <!-- —————————— JS —————————— -->
   <script>
-    // FAQ Dropdown toggle with smooth animation
-    document.querySelectorAll('.faq-question').forEach(q => {
-      q.addEventListener('click', () => {
-        const parent = q.parentElement;
-        parent.classList.toggle('open');
-      });
-    });
+  /* FAQ dropdowns */
+  document.querySelectorAll('.faq-question').forEach(q=>{
+     q.addEventListener('click',()=>q.parentElement.classList.toggle('open'));
+  });
 
-    // Background Canvas Animation: flowing pink waves on dark
-    (() => {
-      const canvas = document.getElementById('backgroundCanvas');
-      const ctx = canvas.getContext('2d');
+  /* Hamburger toggles nav bar */
+  const hamburger=document.getElementById('hamburger');
+  const navbar=document.getElementById('navbar');
+  hamburger.addEventListener('click',()=>{
+     navbar.classList.toggle('show');
+     hamburger.classList.toggle('active');
+  });
 
-      let width, height;
+  /* Auto-hide nav bar on scroll */
+  let lastY=window.scrollY;
+  window.addEventListener('scroll',()=>{
+    const current=window.scrollY;
+    if(current>lastY && current>120){                       // scrolling down
+      navbar.classList.remove('show');                      // hide
+    }else if(current<lastY){                                // scrolling up
+      navbar.classList.add('show');                         // reveal
+    }
+    lastY=current;
+  });
 
-      function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-      }
-
-      class Wave {
-        constructor(amplitude, wavelength, speed, yOffset) {
-          this.amplitude = amplitude;
-          this.wavelength = wavelength;
-          this.speed = speed;
-          this.yOffset = yOffset;
-          this.phase = 0;
+  /* Live dark-pink wallpaper (smooth waves) */
+  (()=>{
+    const c=document.getElementById('backgroundCanvas');
+    const ctx=c.getContext('2d');
+    let w,h;
+    const resize=()=>{w=window.innerWidth;h=window.innerHeight;c.width=w;c.height=h;}
+    class Wave{
+      constructor(A,L,s,y){this.A=A;this.L=L;this.s=s;this.y=y;this.p=0;}
+      draw(){this.p+=this.s;
+        ctx.beginPath();ctx.moveTo(0,h/2);
+        for(let x=0;x<=w;x++){
+          const y=h/2+this.A*Math.sin((2*Math.PI*x)/this.L+this.p)+this.y;
+          ctx.lineTo(x,y);
         }
-        draw() {
-          this.phase += this.speed;
-          ctx.beginPath();
-          ctx.moveTo(0, height / 2);
-          for (let x = 0; x <= width; x++) {
-            const y =
-              height / 2 +
-              this.amplitude * Math.sin((2 * Math.PI * x) / this.wavelength + this.phase) +
-              this.yOffset;
-            ctx.lineTo(x, y);
-          }
-          ctx.lineTo(width, height);
-          ctx.lineTo(0, height);
-          ctx.closePath();
-
-          const gradient = ctx.createLinearGradient(0, 0, 0, height);
-          gradient.addColorStop(0, 'rgba(255, 105, 180, 0.3)'); // hot pink transparent
-          gradient.addColorStop(1, 'rgba(255, 105, 180, 0)');
-          ctx.fillStyle = gradient;
-
-          ctx.shadowColor = 'rgba(255, 105, 180, 0.5)';
-          ctx.shadowBlur = 30;
-
-          ctx.fill();
-        }
+        ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
+        const g=ctx.createLinearGradient(0,0,0,h);
+        g.addColorStop(0,'rgba(255,105,180,.32)');
+        g.addColorStop(1,'rgba(255,105,180,0)');
+        ctx.fillStyle=g;
+        ctx.shadowColor='rgba(255,105,180,.5)';ctx.shadowBlur=28;
+        ctx.fill();
       }
-
-      let waves;
-
-      function init() {
-        waves = [
-          new Wave(40, 300, 0.02, 0),
-          new Wave(30, 200, 0.015, 20),
-          new Wave(20, 150, 0.01, -15),
-        ];
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = '#0a0a0f';
-        ctx.fillRect(0, 0, width, height);
-
-        waves.forEach(wave => wave.draw());
-
-        requestAnimationFrame(animate);
-      }
-
-      window.addEventListener('resize', () => {
-        resize();
-        init();
-      });
-
-      resize();
-      init();
-      animate();
-    })();
+    }
+    let waves;
+    const init=()=>{waves=[new Wave(40,300,.02,0),new Wave(30,200,.015,20),new Wave(20,150,.01,-15)];}
+    const loop=()=>{ctx.clearRect(0,0,w,h);ctx.fillStyle='#0a0a0f';ctx.fillRect(0,0,w,h);waves.forEach(w=>w.draw());requestAnimationFrame(loop);}
+    window.addEventListener('resize',()=>{resize();init();});
+    resize();init();loop();
+  })();
   </script>
-
 </body>
 </html>
