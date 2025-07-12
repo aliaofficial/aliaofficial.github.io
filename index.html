@@ -311,12 +311,12 @@
       });
     });
 
-    // Background Canvas Animation: drifting pink & blue blobs
+    // Background Canvas Animation: flowing pink waves on dark
     (() => {
       const canvas = document.getElementById('backgroundCanvas');
       const ctx = canvas.getContext('2d');
 
-      let width, height, blobs;
+      let width, height;
 
       function resize() {
         width = window.innerWidth;
@@ -325,56 +325,58 @@
         canvas.height = height;
       }
 
-      class Blob {
-        constructor(x, y, radius, color, speedX, speedY) {
-          this.x = x;
-          this.y = y;
-          this.radius = radius;
-          this.color = color;
-          this.speedX = speedX;
-          this.speedY = speedY;
-        }
-        move() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          if (this.x - this.radius > width) this.x = -this.radius;
-          else if (this.x + this.radius < 0) this.x = width + this.radius;
-          if (this.y - this.radius > height) this.y = -this.radius;
-          else if (this.y + this.radius < 0) this.y = height + this.radius;
+      class Wave {
+        constructor(amplitude, wavelength, speed, yOffset) {
+          this.amplitude = amplitude;
+          this.wavelength = wavelength;
+          this.speed = speed;
+          this.yOffset = yOffset;
+          this.phase = 0;
         }
         draw() {
-          const gradient = ctx.createRadialGradient(
-            this.x, this.y, this.radius * 0.3,
-            this.x, this.y, this.radius
-          );
-          gradient.addColorStop(0, this.color);
-          gradient.addColorStop(1, 'transparent');
-          ctx.fillStyle = gradient;
+          this.phase += this.speed;
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.moveTo(0, height / 2);
+          for (let x = 0; x <= width; x++) {
+            const y =
+              height / 2 +
+              this.amplitude * Math.sin((2 * Math.PI * x) / this.wavelength + this.phase) +
+              this.yOffset;
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(width, height);
+          ctx.lineTo(0, height);
+          ctx.closePath();
+
+          const gradient = ctx.createLinearGradient(0, 0, 0, height);
+          gradient.addColorStop(0, 'rgba(255, 105, 180, 0.3)'); // hot pink transparent
+          gradient.addColorStop(1, 'rgba(255, 105, 180, 0)');
+          ctx.fillStyle = gradient;
+
+          ctx.shadowColor = 'rgba(255, 105, 180, 0.5)';
+          ctx.shadowBlur = 30;
+
           ctx.fill();
         }
       }
 
+      let waves;
+
       function init() {
-        blobs = [];
-        for (let i = 0; i < 10; i++) {
-          const x = Math.random() * width;
-          const y = Math.random() * height;
-          const radius = 100 + Math.random() * 100;
-          const color = i % 2 === 0 ? 'rgba(42,42,255,0.4)' : 'rgba(255,42,255,0.4)';
-          const speedX = (Math.random() - 0.5) * 0.15;
-          const speedY = (Math.random() - 0.5) * 0.15;
-          blobs.push(new Blob(x, y, radius, color, speedX, speedY));
-        }
+        waves = [
+          new Wave(40, 300, 0.02, 0),
+          new Wave(30, 200, 0.015, 20),
+          new Wave(20, 150, 0.01, -15),
+        ];
       }
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
-        blobs.forEach(blob => {
-          blob.move();
-          blob.draw();
-        });
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0, 0, width, height);
+
+        waves.forEach(wave => wave.draw());
+
         requestAnimationFrame(animate);
       }
 
