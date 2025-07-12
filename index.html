@@ -10,76 +10,261 @@
 
   <style>
   /* ─── RESET / BASE ───────────────────────────── */
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;font-family:'Inter',sans-serif;background:#0a0a0f;color:#ddd;overflow-x:hidden}
+  *,*::before,*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html, body {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #ddd;
+    overflow-x: hidden;
+  }
 
   /* ─── CANVAS BACKGROUND ──────────────────────── */
-  #backgroundCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:-1}
+  #backgroundCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+  }
 
   /* ─── HAMBURGER ──────────────────────────────── */
-  #hamburger{
-    position:fixed;top:18px;left:20px;z-index:1200;
-    font-size:1.9rem;line-height:1;cursor:pointer;color:#fff;user-select:none;
-    transition:transform .3s ease;
+  #hamburger {
+    position: fixed;
+    top: 18px;
+    left: 20px;
+    z-index: 1200;
+    font-size: 1.9rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #fff;
+    user-select: none;
+    transition: transform 0.3s ease;
   }
-  #hamburger.active{transform:rotate(90deg)}
+  #hamburger.active {
+    transform: rotate(90deg);
+  }
 
   /* ─── NAV BAR ────────────────────────────────── */
-  #navbar{
-    position:fixed;top:0;left:0;width:100%;height:60px;padding:0 1.5rem 0 70px;
-    display:flex;align-items:center;justify-content:flex-end;gap:2.5rem;
-    background:rgba(15,15,25,.86);backdrop-filter:blur(6px);
-    transform:translateY(-100%);transition:transform .35s ease;z-index:1100;
+  #navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 1.5rem 0 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2.5rem;
+    background: rgba(15, 15, 25, 0.86);
+    backdrop-filter: blur(6px);
+    transform: translateY(-100%);
+    transition: transform 0.35s ease;
+    z-index: 1100;
   }
-  #navbar.show{transform:translateY(0)}
-  #navbar a{color:#ccc;text-decoration:none;font-weight:600;transition:color .25s}
-  #navbar a:hover{color:#fff}
+  #navbar.show {
+    transform: translateY(0);
+  }
+  #navbar a {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.25s;
+  }
+  #navbar a:hover {
+    color: #fff;
+  }
 
   /* ─── BODY PADDING WHEN NAV VISIBLE ──────────── */
-  body.nav-visible{padding-top:60px;transition:padding-top .35s ease}
+  body.nav-visible {
+    padding-top: 60px;
+    transition: padding-top 0.35s ease;
+  }
 
   /* ─── CONTENT FADE/SLIDE ─────────────────────── */
-  .container{max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;text-align:center}
-  .fade-slide{opacity:0;transform:translateY(20px);animation:fadeSlideUp 1s forwards ease-out}
-  .delay-1{animation-delay:.3s}.delay-2{animation-delay:.6s}.delay-3{animation-delay:.9s}.delay-4{animation-delay:1.2s}
-  @keyframes fadeSlideUp{to{opacity:1;transform:translateY(0)}}
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    text-align: center;
+  }
+  .fade-slide {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideUp 1s forwards ease-out;
+  }
+  .delay-1 {
+    animation-delay: 0.3s;
+  }
+  .delay-2 {
+    animation-delay: 0.6s;
+  }
+  .delay-3 {
+    animation-delay: 0.9s;
+  }
+  .delay-4 {
+    animation-delay: 1.2s;
+  }
+  @keyframes fadeSlideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   /* ─── HERO / MAIN STYLES ─────────────────────── */
-  h1.title{font-size:4rem;font-weight:700;color:#e0e0ff;margin:.2rem 0;text-shadow:0 0 12px #d76fff}
-  p.subtitle{font-size:1.4rem;color:#aaa;margin-bottom:2.5rem}
-  .executor-image{max-width:350px;width:100%;border-radius:16px;box-shadow:0 0 20px #ff29ffaa;margin-bottom:2.5rem}
-  .btn-download{display:inline-block;background:#7b36ff;color:#fff;font-weight:700;font-size:1.2rem;
-                padding:.85rem 3rem;border-radius:30px;text-decoration:none;box-shadow:0 0 14px #9c61ff;
-                transition:background .3s;margin-bottom:4rem}
-  .btn-download:hover{background:#a263ff}
+  h1.title {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #e0e0ff;
+    margin: 0.2rem 0;
+    text-shadow: 0 0 12px #d76fff;
+  }
+  p.subtitle {
+    font-size: 1.4rem;
+    color: #aaa;
+    margin-bottom: 2.5rem;
+  }
+  .executor-image {
+    max-width: 350px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 0 20px #ff29ffaa;
+    margin-bottom: 2.5rem;
+  }
+  .btn-download {
+    display: inline-block;
+    background: #7b36ff;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 0.85rem 3rem;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 0 14px #9c61ff;
+    transition: background 0.3s;
+    margin-bottom: 4rem;
+  }
+  .btn-download:hover {
+    background: #a263ff;
+  }
 
   /* ─── DEVELOPER CARD ─────────────────────────── */
-  .developers{max-width:400px;margin:0 auto;text-align:left}
-  .dev-header{font-size:2rem;font-weight:700;color:#d792ff;text-align:center;margin:1rem 0}
-  .dev-card{display:flex;align-items:center;gap:1rem;background:rgba(80,40,120,.3);padding:1rem 1.5rem;
-            border-radius:12px;box-shadow:0 0 14px #b68bff55}
-  .dev-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #a080ff;background:#3a176a}
-  .dev-name{font-weight:700;font-size:1.2rem;color:#fff}
-  .dev-role{font-size:1rem;color:#b8a9d4}
+  .developers {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .dev-header {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d792ff;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  .dev-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(80, 40, 120, 0.3);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 14px #b68bff55;
+  }
+  .dev-photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #a080ff;
+    background: #3a176a;
+  }
+  .dev-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  .dev-role {
+    font-size: 1rem;
+    color: #b8a9d4;
+  }
 
   /* ─── FAQ ────────────────────────────────────── */
-  .faq-section{max-width:700px;margin:4rem auto}
-  .faq-header{font-size:2rem;font-weight:700;color:#d792ff;text-align:center;margin-bottom:1.5rem}
-  .faq-item{background:rgba(50,25,75,.4);border-radius:10px;margin-bottom:1rem;overflow:hidden;box-shadow:0 0 8px #b381ff50}
-  .faq-question{padding:1rem 1.5rem;font-weight:600;font-size:1.1rem;cursor:pointer;position:relative;color:#e0d9ff}
-  .faq-question::after{content:'+';position:absolute;right:1.5rem;font-size:1.4rem;font-weight:700;transition:transform .3s}
-  .faq-item.open .faq-question::after{transform:rotate(45deg)}
-  .faq-answer{max-height:0;padding:0 1.5rem;opacity:0;color:#ccc;font-size:1rem;line-height:1.5;
-              transition:max-height .4s,padding .4s,opacity .5s .15s}
-  .faq-item.open .faq-answer{max-height:220px;padding:1rem 1.5rem;opacity:1}
+  .faq-section {
+    max-width: 700px;
+    margin: 4rem auto;
+  }
+  .faq-header {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d792ff;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .faq-item {
+    background: rgba(50, 25, 75, 0.4);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0 8px #b381ff50;
+  }
+  .faq-question {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    position: relative;
+    color: #e0d9ff;
+  }
+  .faq-question::after {
+    content: '+';
+    position: absolute;
+    right: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    transition: transform 0.3s;
+  }
+  .faq-item.open .faq-question::after {
+    transform: rotate(45deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    padding: 0 1.5rem;
+    opacity: 0;
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: max-height 0.4s, padding 0.4s, opacity 0.5s 0.15s;
+  }
+  .faq-item.open .faq-answer {
+    max-height: 220px;
+    padding: 1rem 1.5rem;
+    opacity: 1;
+  }
 
   /* ─── FOOTER ─────────────────────────────────── */
-  footer{text-align:center;padding:1.5rem;color:#666;font-size:.9rem}
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
 
   /* ─── RESPONSIVE ─────────────────────────────── */
-  @media(max-width:600px){
-    .dev-card{flex-direction:column;text-align:center}
-    .developers{max-width:90%}
+  @media (max-width: 600px) {
+    .dev-card {
+      flex-direction: column;
+      text-align: center;
+    }
+    .developers {
+      max-width: 90%;
+    }
   }
   </style>
 </head>
@@ -101,7 +286,7 @@
     <h1 class="title fade-slide delay-1">Alia</h1>
     <p class="subtitle fade-slide delay-2">Roblox Security & Penetration Tool</p>
 
-    <img src="executor-placeholder.png" alt="Alia Executor" class="executor-image fade-slide delay-3">
+    <img src="IMG_5064.jpeg" alt="Alia Executor" class="executor-image fade-slide delay-3">
 
     <a href="/download.html" class="btn-download fade-slide delay-4">Download</a>
 
@@ -147,22 +332,22 @@
   <!-- ─── JS ────────────────────────────────────── -->
   <script>
   /* FAQ dropdowns */
-  document.querySelectorAll('.faq-question').forEach(q=>{
-    q.addEventListener('click',()=>q.parentElement.classList.toggle('open'));
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
   });
 
   /* Nav + hamburger logic */
-  const navbar   = document.getElementById('navbar');
-  const hamburger= document.getElementById('hamburger');
-  const body     = document.body;
-  const navHeight= 60;              // keep in sync with CSS height
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const body = document.body;
+  const navHeight = 60; // keep in sync with CSS height
 
-  function setBodyPadding(){
+  function setBodyPadding() {
     body.classList.toggle('nav-visible', navbar.classList.contains('show'));
   }
   setBodyPadding();
 
-  hamburger.addEventListener('click',()=>{
+  hamburger.addEventListener('click', () => {
     navbar.classList.toggle('show');
     hamburger.classList.toggle('active');
     setBodyPadding();
@@ -170,31 +355,33 @@
 
   /* Auto-hide on scroll */
   let lastY = window.scrollY;
-  window.addEventListener('scroll',()=>{
+  window.addEventListener('scroll', () => {
     const curr = window.scrollY;
-    if(curr>lastY && curr>120){                // scrolled down
+    if (curr > lastY && curr > 120) {
+      // scrolled down
       navbar.classList.remove('show');
-    }else if(curr<lastY){                      // scrolled up
+    } else if (curr < lastY) {
+      // scrolled up
       navbar.classList.add('show');
     }
-    lastY=curr;
+    lastY = curr;
     setBodyPadding();
   });
 
   /* Live dark-pink wallpaper (smooth waves) */
-  (()=>{const c=document.getElementById('backgroundCanvas'),x=c.getContext('2d');let w,h;
-    const resize=()=>{w=innerWidth;h=innerHeight;c.width=w;c.height=h};
-    class W{constructor(A,L,s,y){this.A=A;this.L=L;this.s=s;this.y=y;this.p=0}d(){
-      this.p+=this.s;x.beginPath();x.moveTo(0,h/2);
-      for(let i=0;i<=w;i++){x.lineTo(i,h/2+this.A*Math.sin((2*Math.PI*i)/this.L+this.p)+this.y)}
-      x.lineTo(w,h);x.lineTo(0,h);x.closePath();
-      const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(255,105,180,.32)');g.addColorStop(1,'rgba(255,105,180,0)');
-      x.fillStyle=g;x.shadowColor='rgba(255,105,180,.5)';x.shadowBlur=28;x.fill();
-    }}
-    let waves;const init=()=>{waves=[new W(40,300,.02,0),new W(30,200,.015,20),new W(20,150,.01,-15)]};
-    const loop=()=>{x.clearRect(0,0,w,h);x.fillStyle='#0a0a0f';x.fillRect(0,0,w,h);waves.forEach(v=>v.d());requestAnimationFrame(loop)};
-    addEventListener('resize',()=>{resize();init()});resize();init();loop();
-  })();
-  </script>
-</body>
-</html>
+  (() => {
+    const c = document.getElementById('backgroundCanvas'),
+      x = c.getContext('2d');
+    let w, h;
+    const resize = () => {
+      w = innerWidth;
+      h = innerHeight;
+      c.width = w;
+      c.height = h;
+    };
+    class W {
+      constructor(A, L, s, y) {
+        this.A = A;
+        this.L = L;
+        this.s = s;
+        this.y = y
