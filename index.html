@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alia — Roblox Security & Penetration Tool</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #ddd;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Canvas background will fill entire screen */
+    #backgroundCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      text-align: center;
+    }
+
+    /* Fade + slide animations */
+    .fade-slide {
+      opacity: 0;
+      transform: translateY(20px);
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-out;
+      animation-name: fadeSlideUp;
+      animation-duration: 1s;
+    }
+    .fade-slide.delay-1 {
+      animation-delay: 0.3s;
+    }
+    .fade-slide.delay-2 {
+      animation-delay: 0.6s;
+    }
+    .fade-slide.delay-3 {
+      animation-delay: 0.9s;
+    }
+    .fade-slide.delay-4 {
+      animation-delay: 1.2s;
+    }
+    @keyframes fadeSlideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Title */
+    h1.title {
+      font-weight: 700;
+      font-size: 4rem;
+      color: #e0e0ff;
+      margin-bottom: 0.2rem;
+      text-shadow: 0 0 12px #d76fff;
+    }
+    p.subtitle {
+      font-weight: 400;
+      font-size: 1.4rem;
+      margin-bottom: 2.5rem;
+      color: #aaa;
+    }
+
+    /* Executor Image */
+    .executor-image {
+      max-width: 350px;
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #ff29ffaa;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Download Button */
+    .btn-download {
+      display: inline-block;
+      background: #7b36ff;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0.85rem 3rem;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 0 14px #9c61ff;
+      transition: background 0.3s ease;
+      margin-bottom: 4rem;
+    }
+    .btn-download:hover {
+      background: #a263ff;
+    }
+
+    /* Developers Section */
+    .developers {
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #ccc;
+    }
+    .dev-header {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #d792ff;
+      text-align: center;
+    }
+    .dev-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(80, 40, 120, 0.3);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 14px #b68bff55;
+    }
+    .dev-info {
+      flex-grow: 1;
+    }
+    .dev-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .dev-role {
+      font-weight: 400;
+      font-size: 1rem;
+      color: #b8a9d4;
+    }
+    .dev-photo {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #a080ff;
+      background: #3a176a;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #ddd;
+      margin-bottom: 4rem;
+    }
+    .faq-header {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #d792ff;
+      text-align: center;
+    }
+    .faq-item {
+      background: rgba(50, 25, 75, 0.4);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 0 8px #b381ff50;
+    }
+    .faq-question {
+      cursor: pointer;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      user-select: none;
+      position: relative;
+      color: #e0d9ff;
+    }
+    .faq-question::after {
+      content: '+';
+      position: absolute;
+      right: 1.5rem;
+      font-weight: 700;
+      font-size: 1.4rem;
+      transition: transform 0.3s ease;
+    }
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      padding: 0 1.5rem;
+      opacity: 0;
+      color: #ccc;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition:
+        max-height 0.4s ease,
+        padding 0.4s ease,
+        opacity 0.5s ease 0.15s;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px; /* adjust if answer longer */
+      padding: 1rem 1.5rem;
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      color: #666;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .dev-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .developers {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas for animated background -->
+  <canvas id="backgroundCanvas"></canvas>
+
+  <div class="container">
+    <h1 class="title fade-slide delay-1">Alia</h1>
+    <p class="subtitle fade-slide delay-2">Roblox Security & Penetration Tool</p>
+
+    <!-- Executor image placeholder -->
+    <img src="executor-placeholder.png" alt="Alia Executor Screenshot" class="executor-image fade-slide delay-3" />
+
+    <a href="/download.html" class="btn-download fade-slide delay-4">Download</a>
+
+    <!-- Developers -->
+    <section class="developers fade-slide delay-4" aria-label="Developers">
+      <h2 class="dev-header">Developers</h2>
+      <div class="dev-card">
+        <img src="your-photo.jpg" alt="ZodaciOS" class="dev-photo" />
+        <div class="dev-info">
+          <div class="dev-name">ZodaciOS</div>
+          <div class="dev-role">Main Developer</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section fade-slide delay-4" aria-label="Frequently Asked Questions">
+      <h2 class="faq-header">FAQ</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">When will this be published?</div>
+        <div class="faq-answer">Alia will be published once development is complete, which is around 2026.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Will this executor be mobile only?</div>
+        <div class="faq-answer">Yes. Alia does not plan on supporting PC.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Will this executor be free?</div>
+        <div class="faq-answer">Yes, it will be free. However, users will need to go through a staging process as this tool is intended for developers only, wishing to test anti cheat systems, etc.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Whats the staging process?</div>
+        <div class="faq-answer">The staging process will be a short document filled in with questions that prove your legitimacy to what the purpose of using Alia is. Generally, we accept game developers and so on.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Can I not be a developer to access this tool once released?</div>
+        <div class="faq-answer">We will not allow any private use to our executor. Alia is created to be a private, undetectable executor used for good intentions.</div>
+      </div>
+
+    </section>
+  </div>
+
+  <footer>
+    2025 - Alia. All rights reserved.
+  </footer>
+
+  <script>
+    // FAQ Dropdown toggle with smooth animation
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const parent = q.parentElement;
+        parent.classList.toggle('open');
+      });
+    });
+
+    // Background Canvas Animation: drifting pink & blue blobs
+    (() => {
+      const canvas = document.getElementById('backgroundCanvas');
+      const ctx = canvas.getContext('2d');
+
+      let width, height, blobs;
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+
+      class Blob {
+        constructor(x, y, radius, color, speedX, speedY) {
+          this.x = x;
+          this.y = y;
+          this.radius = radius;
+          this.color = color;
+          this.speedX = speedX;
+          this.speedY = speedY;
+        }
+        move() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x - this.radius > width) this.x = -this.radius;
+          else if (this.x + this.radius < 0) this.x = width + this.radius;
+          if (this.y - this.radius > height) this.y = -this.radius;
+          else if (this.y + this.radius < 0) this.y = height + this.radius;
+        }
+        draw() {
+          const gradient = ctx.createRadialGradient(
+            this.x, this.y, this.radius * 0.3,
+            this.x, this.y, this.radius
+          );
+          gradient.addColorStop(0, this.color);
+          gradient.addColorStop(1, 'transparent');
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function init() {
+        blobs = [];
+        for (let i = 0; i < 10; i++) {
+          const x = Math.random() * width;
+          const y = Math.random() * height;
+          const radius = 100 + Math.random() * 100;
+          const color = i % 2 === 0 ? 'rgba(42,42,255,0.4)' : 'rgba(255,42,255,0.4)';
+          const speedX = (Math.random() - 0.5) * 0.15;
+          const speedY = (Math.random() - 0.5) * 0.15;
+          blobs.push(new Blob(x, y, radius, color, speedX, speedY));
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        blobs.forEach(blob => {
+          blob.move();
+          blob.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', () => {
+        resize();
+        init();
+      });
+
+      resize();
+      init();
+      animate();
+    })();
+  </script>
+
+</body>
+</html>
