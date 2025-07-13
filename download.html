@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alia — Staging Process</title>
+  <title>Alia — Download</title>
 
   <!-- Inter font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -13,38 +13,66 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;font-family:'Inter',sans-serif;background:#0a0a0f;color:#ddd;overflow-x:hidden}
 
-    /* ─── CANVAS BACKGROUND ────────────────────── */
+    /* ─── BACKGROUND CANVAS ────────────────────── */
     #backgroundCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:-1}
 
-    /* ─── HAMBURGER ────────────────────────────── */
-    #hamburger{position:fixed;top:18px;left:20px;z-index:1200;font-size:1.9rem;line-height:1;cursor:pointer;color:#fff;user-select:none;transition:transform .3s ease}
+    /* ─── HAMBURGER & NAV ──────────────────────── */
+    #hamburger{position:fixed;top:18px;left:20px;z-index:1200;font-size:1.9rem;line-height:1;cursor:pointer;color:#fff;user-select:none;transition:transform .3s}
     #hamburger.active{transform:rotate(90deg)}
-
-    /* ─── NAVBAR ───────────────────────────────── */
     #navbar{position:fixed;top:0;left:0;width:100%;height:60px;padding:0 1.5rem 0 70px;display:flex;align-items:center;justify-content:flex-end;gap:2.5rem;
             background:rgba(15,15,25,.86);backdrop-filter:blur(6px);transform:translateY(-100%);transition:transform .35s ease;z-index:1100}
     #navbar.show{transform:translateY(0)}
     #navbar a{color:#ccc;text-decoration:none;font-weight:600;transition:color .25s}
     #navbar a:hover{color:#fff}
-
-    body.nav-visible{padding-top:60px;transition:padding-top .35s ease}
+    body.nav-visible{padding-top:60px;transition:padding-top .35s}
 
     /* ─── CONTENT ──────────────────────────────── */
     .container{max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;text-align:center}
-    h1{font-size:3rem;font-weight:700;color:#e0e0ff;margin-bottom:1rem;text-shadow:0 0 10px #d76fff}
-    h2{font-size:2rem;font-weight:700;color:#d792ff;margin:3rem 0 1rem}
-    p{font-size:1.15rem;color:#aaa;margin-bottom:1.2rem;line-height:1.6}
-    ul{list-style:disc inside;margin:1rem auto;text-align:left;max-width:680px}
-    li{margin:.4rem 0;font-size:1.05rem}
-    a.inline-link{color:#9c61ff;text-decoration:underline}
+    h1{font-size:3rem;font-weight:700;color:#e0e0ff;margin-bottom:1.2rem;text-shadow:0 0 10px #d76fff}
+
+    .disclaimer-box{
+      max-width:700px;
+      margin:0 auto 2rem;
+      padding:1.5rem 1.8rem;
+      background:rgba(255,255,255,0.05);
+      border:1px solid #fff;
+      box-shadow:0 0 12px #ffffff55;
+      border-radius:12px;
+      max-height:260px;
+      overflow-y:auto;
+      text-align:left;
+    }
+    .disclaimer-box ul{list-style:disc inside;line-height:1.6;color:#ddd}
+    .disclaimer-box li{margin:.5rem 0}
+
+    .agree-area{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:2.3rem;font-size:1.1rem}
+    .agree-area input{width:20px;height:20px;cursor:pointer}
+
+    .btn-download{
+      display:inline-block;
+      background:#444;
+      color:#999;
+      font-weight:700;
+      font-size:1.2rem;
+      padding:.85rem 3rem;
+      border-radius:30px;
+      text-decoration:none;
+      box-shadow:0 0 14px #00000040;
+      transition:background .3s,color .3s;
+      pointer-events:none;
+    }
+    .btn-download.enabled{
+      background:#7b36ff;
+      color:#fff;
+      box-shadow:0 0 14px #9c61ff;
+      pointer-events:auto;
+    }
+    .btn-download.enabled:hover{background:#a263ff}
 
     footer{text-align:center;padding:1.5rem;color:#666;font-size:.9rem}
 
-    /* small devices tweaks */
     @media(max-width:600px){
       h1{font-size:2.4rem}
-      h2{font-size:1.6rem}
-      p,li{font-size:1rem}
     }
   </style>
 </head>
@@ -53,66 +81,57 @@
   <!-- Hamburger -->
   <div id="hamburger">☰</div>
 
-  <!-- Nav bar -->
+  <!-- Nav -->
   <nav id="navbar" class="show">
     <a href="/index.html">Home</a>
   </nav>
 
-  <!-- Background canvas -->
+  <!-- Background waves -->
   <canvas id="backgroundCanvas"></canvas>
 
   <!-- Main content -->
-  <div class="container fade-slide delay-1">
-    <p>Alia is a Lua executor created for game developers. The purpose of the tool is to give game developers who create anti-cheat a way to test freely without constantly renewing keys.</p>
+  <div class="container">
+    <h1>Disclaimer Notice</h1>
 
-    <h1>Staging Process</h1>
-    <p>These outline the process of your application submission, payment information and more.</p>
+    <div class="disclaimer-box">
+      <p>By using our product “Alia”, you agree, acknowledge and understand the disclaimer notice.</p>
+      <ul>
+        <li>Alia is provided to you without any warranty.</li>
+        <li>Alia or the developers of the product are not responsible or liable for: Roblox account bans, Roblox account termination, loss of robux, or/and anything that can occur by using our service.</li>
+        <li>Alia nor its developers condone the misusage of this tool. Use responsibly and only test on your own games OR have full consent to test on a game that you do not own or manage.</li>
+      </ul>
+    </div>
 
-    <h2>Form Submission</h2>
-    <p>To apply for this tool, you must meet these requirements:</p>
-    <ul>
-      <li>Developer or/and owner of a game, with evidence provided</li>
-      <li>The game must have an average of around 10+ players daily, with evidence provided</li>
-      <li>You must have at least an average of 5,000 robux spent in the game monthly</li>
-      <li>Provide evidence of a working, legitimate anti-cheat system built into your game</li>
-      <li>Able to pay $1.99 USD weekly or every two weeks</li>
-      <li>No bad reputation or background of exploiting, hacking or malicious activity</li>
-    </ul>
-    <p>If you meet these requirements and would like to place a preorder on this product, please apply using this URL:<br>
-       <a href="#" class="inline-link">&lt;application-url&gt;</a>
-    </p>
+    <div class="agree-area">
+      <input type="checkbox" id="agreeBox">
+      <label for="agreeBox">I agree</label>
+    </div>
 
-    <h2>Acceptance of Terms of Service</h2>
-    <p>Alia must ensure all users agree to the terms of service. It can be found here: <a href="tos.html" class="inline-link">Terms of Service</a>.<br>
-       If not accepted, we will not grant you the tool.
-    </p>
-
-    <h2>Wait 1-2 Weeks</h2>
-    <p>Within 1-2 weeks, if you meet the application requirements, you will be accepted. You will then receive an email explaining how to install or inject Alia into Roblox on iOS, along with a key that renews every two weeks depending on your payment.</p>
-    <p>You can cancel anytime after each payment has been created. Once canceled, your key will no longer be valid and you are free to delete the application.</p>
-
-    <h2>Remember this</h2>
-    <ul>
-      <li>All keys are hardware-ID issued. Redistribution of keys or the app is not possible.</li>
-      <li>Decrypting Alia as an .ipa and redistributing it, or modifying its files to allow any key, is not allowed and is considered piracy.</li>
-    </ul>
-
-    <p>That’s it! Have fun.</p>
+    <!-- Replace # with your Linkvertise URL -->
+    <a href="#" id="dlBtn" class="btn-download">Download</a>
   </div>
 
   <footer>2025 – Alia. All rights reserved.</footer>
 
-  <!-- ─── JS (same as home) ────────────────────── -->
+  <!-- ─── JS ───────────────────────────────────── -->
   <script>
-    /* Nav + hamburger */
-    const navbar=document.getElementById('navbar');
-    const hamburger=document.getElementById('hamburger');
-    const body=document.body;
+    /* Checkbox enable logic */
+    const agree=document.getElementById('agreeBox');
+    const dlBtn=document.getElementById('dlBtn');
+    agree.addEventListener('change',()=>{
+      if(agree.checked){
+        dlBtn.classList.add('enabled');
+      }else{
+        dlBtn.classList.remove('enabled');
+      }
+    });
+
+    /* Nav / hamburger (same as home) */
+    const navbar=document.getElementById('navbar'),hamburger=document.getElementById('hamburger'),body=document.body;
     const setPad=()=>body.classList.toggle('nav-visible',navbar.classList.contains('show'));
     setPad();
     hamburger.addEventListener('click',()=>{navbar.classList.toggle('show');hamburger.classList.toggle('active');setPad();});
 
-    /* Auto-hide nav on scroll */
     let lastY=window.scrollY;
     window.addEventListener('scroll',()=>{
       const y=window.scrollY;
@@ -121,7 +140,7 @@
       lastY=y;setPad();
     });
 
-    /* Animated wave background (same as home) */
+    /* Wave background (identical to home) */
     (()=>{const c=document.getElementById('backgroundCanvas'),x=c.getContext('2d');let w,h;
       const resize=()=>{w=innerWidth;h=innerHeight;c.width=w;c.height=h};
       class Wave{constructor(A,L,s,y){this.A=A;this.L=L;this.s=s;this.y=y;this.p=0;}d(){
@@ -134,8 +153,7 @@
       }}
       let waves;const init=()=>{waves=[new Wave(40,300,.02,0),new Wave(30,200,.015,20),new Wave(20,150,.01,-15)]};
       const loop=()=>{x.clearRect(0,0,w,h);x.fillStyle='#0a0a0f';x.fillRect(0,0,w,h);waves.forEach(v=>v.d());requestAnimationFrame(loop)};
-      addEventListener('resize',()=>{resize();init()});
-      resize();init();loop();
+      addEventListener('resize',()=>{resize();init()});resize();init();loop();
     })();
   </script>
 </body>
