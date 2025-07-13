@@ -52,7 +52,7 @@
   <canvas id="backgroundCanvas"></canvas>
   <div class="container">
     <h1 class="title fade-slide delay-1">Alia</h1>
-    <p class="subtitle fade-slide delay-2">First true-keyless iOS executor.</p>
+    <p class="subtitle fade-slide delay-2">First true-keyless iOS executor</p>
     <img src="IMG_5064.jpeg" alt="Alia Executor" class="executor-image fade-slide delay-3">
     <a href="/download.html" class="btn-download fade-slide delay-4">Download</a>
 
@@ -67,37 +67,131 @@
       </div>
     </section>
 
-    <section class="faq-section fade-slide delay-4">
+    <section class="faq-section fade-slide delay-4" aria-label="Frequently Asked Questions">
       <h2 class="faq-header">FAQ</h2>
 
-      <div class="faq-item"><div class="faq-question">When will this be published?</div><div class="faq-answer">Alia will be published once development is complete, which is around 2026.</div></div>
-      <div class="faq-item"><div class="faq-question">Will this executor be iOS only?</div><div class="faq-answer">Yes. Alia does not plan on supporting Android or PC. If you really want to know why; it's because I am not an Android developer. I also don't own an Android, and I don't know how to inject in Windows/MacOS.</div></div>
-      <div class="faq-item"><div class="faq-question">Will this executor be free?</div><div class="faq-answer">Yes, it will be free. However, users will need to go through a staging process as this tool is intended for developers only, wishing to test anti-cheat systems, etc.</div></div>
-      <div class="faq-item"><div class="faq-question">What's the staging process?</div><div class="faq-answer">A short form that verifies you’re a legitimate developer and want to use our tool for testing. You may have to pay a small fee weekly.</div></div>
-      <div class="faq-item"><div class="faq-question">Can I not be a developer to access this tool once released?</div><div class="faq-answer">No. Alia is a private, secret executor intended solely for ethical research.</div></div>
-      <div class="faq-item"><div class="faq-question">As a developer, do I need to pay for this executor?</div><div class="faq-answer">We are currently planning after release to charge a small fee ranging from $1.99 USD weekly up to $4.99 USD. These charges will benefit us, the team, and cover expenses such as domains.</div></div>
-      <div class="faq-item"><div class="faq-question">Why can’t I just use any other executor?</div><div class="faq-answer">Alia is crafted for game developers. Our script deprives mainly focus on cheating or unethical hacking. The tool is provided for testing anti-cheat systems. However, we must ensure it’s used professionally since it can execute any Lua script without restriction.</div></div>
-      <div class="faq-item"><div class="faq-question">Is Alia safe to install?</div><div class="faq-answer">Yes. Alia is only injected with the required files for it to run properly, and that's it. No loggers or trackers.</div></div>
-      <div class="faq-item"><div class="faq-question">Does Alia bypass Byfron/Anti-Cheat?</div><div class="faq-answer">Roblox on mobile devices does not have Byfron installed yet as it is a kernel-level extension on PC. This means that all executors on mobile are near undetectable. However, anti-cheat crafted in games can still detect you.</div></div>
+      <div class="faq-item">
+        <div class="faq-question">Why is Alia free?</div>
+        <div class="faq-answer">
+          Alia was always a passion project I created for fun. Originally, Alia was designed to be for developers only. However, I decided to make it the first keyless iOS executor.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Does Alia have a key system or any ads?</div>
+        <div class="faq-answer">
+          Nope. All there is when you click Download is a disclaimer, a Linkvertise, and that's it. Beyond that point, installing the .ipa, there will be no more keys, ads, etc.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Is Alia safe?</div>
+        <div class="faq-answer">
+          Yes. Alia is 100% safe. We do not inject anything into Roblox other than the important files required to run Alia. That's it.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">When will this tool release?</div>
+        <div class="faq-answer">
+          Alia is planned to release around very late 2025 - early 2026. Absolutely no guarantees during the journey.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Will this tool bypass Byfron?</div>
+        <div class="faq-answer">
+          Currently, Byfron is a PC only anti cheat, as adding Byfron to mobile devices will reduce the performance heavily. Therefore, creating executors on iOS are easier, and are also more undetectable.
+        </div>
+      </div>
     </section>
   </div>
   <footer>2025 – Alia. All rights reserved.</footer>
   <script>
-    document.querySelectorAll('.faq-question').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
-    const navbar=document.getElementById('navbar'),hamburger=document.getElementById('hamburger'),body=document.body;
-    const setPad=()=>body.classList.toggle('nav-visible',navbar.classList.contains('show'));
-    setPad();hamburger.addEventListener('click',()=>{navbar.classList.toggle('show');hamburger.classList.toggle('active');setPad();});
-    let lastY=window.scrollY;
-    window.addEventListener('scroll',()=>{const y=window.scrollY;if(y>lastY&&y>120){navbar.classList.remove('show');hamburger.classList.remove('active');}else if(y<lastY){navbar.classList.add('show');}lastY=y;setPad();});
-    (()=>{const c=document.getElementById('backgroundCanvas'),x=c.getContext('2d');let w,h;
-      const resize=()=>{w=innerWidth;h=innerHeight;c.width=w;c.height=h};
-      class Wave{constructor(A,L,s,y){this.A=A;this.L=L;this.s=s;this.y=y;this.p=0;}d(){this.p+=this.s;x.beginPath();x.moveTo(0,h/2);
-      for(let i=0;i<=w;i++){x.lineTo(i,h/2+this.A*Math.sin((2*Math.PI*i)/this.L+this.p)+this.y);}x.lineTo(w,h);x.lineTo(0,h);x.closePath();
-      const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(255,105,180,.32)');g.addColorStop(1,'rgba(255,105,180,0)');
-      x.fillStyle=g;x.shadowColor='rgba(255,105,180,.5)';x.shadowBlur=28;x.fill();}}
-      let waves;const init=()=>{waves=[new Wave(40,300,.02,0),new Wave(30,200,.015,20),new Wave(20,150,.01,-15)]};
-      const loop=()=>{x.clearRect(0,0,w,h);x.fillStyle='#0a0a0f';x.fillRect(0,0,w,h);waves.forEach(v=>v.d());requestAnimationFrame(loop)};
-      addEventListener('resize',()=>{resize();init()});resize();init();loop();
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
+
+    // Nav / hamburger
+    const navbar = document.getElementById('navbar'),
+          hamburger = document.getElementById('hamburger'),
+          body = document.body;
+    const setPad = () => body.classList.toggle('nav-visible', navbar.classList.contains('show'));
+    setPad();
+    hamburger.addEventListener('click', () => {
+      navbar.classList.toggle('show');
+      hamburger.classList.toggle('active');
+      setPad();
+    });
+
+    // Auto-hide nav on scroll
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > lastY && y > 120) {
+        navbar.classList.remove('show');
+        hamburger.classList.remove('active');
+      } else if (y < lastY) {
+        navbar.classList.add('show');
+      }
+      lastY = y;
+      setPad();
+    });
+
+    // Animated wave background
+    (() => {
+      const c = document.getElementById('backgroundCanvas'), x = c.getContext('2d');
+      let w, h;
+      const resize = () => {
+        w = innerWidth;
+        h = innerHeight;
+        c.width = w;
+        c.height = h;
+      };
+      class Wave {
+        constructor(A, L, s, y) {
+          this.A = A;
+          this.L = L;
+          this.s = s;
+          this.y = y;
+          this.p = 0;
+        }
+        d() {
+          this.p += this.s;
+          x.beginPath();
+          x.moveTo(0, h / 2);
+          for (let i = 0; i <= w; i++) {
+            x.lineTo(i, h / 2 + this.A * Math.sin((2 * Math.PI * i) / this.L + this.p) + this.y);
+          }
+          x.lineTo(w, h);
+          x.lineTo(0, h);
+          x.closePath();
+          const g = x.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, 'rgba(255,105,180,.32)');
+          g.addColorStop(1, 'rgba(255,105,180,0)');
+          x.fillStyle = g;
+          x.shadowColor = 'rgba(255,105,180,.5)';
+          x.shadowBlur = 28;
+          x.fill();
+        }
+      }
+      let waves;
+      const init = () => {
+        waves = [new Wave(40, 300, 0.02, 0), new Wave(30, 200, 0.015, 20), new Wave(20, 150, 0.01, -15)];
+      };
+      const loop = () => {
+        x.clearRect(0, 0, w, h);
+        x.fillStyle = '#0a0a0f';
+        x.fillRect(0, 0, w, h);
+        waves.forEach(v => v.d());
+        requestAnimationFrame(loop);
+      };
+      addEventListener('resize', () => {
+        resize();
+        init();
+      });
+      resize();
+      init();
+      loop();
     })();
   </script>
 </body>
