@@ -4,53 +4,324 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alia — First true-keyless iOS executor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:'Inter',sans-serif;background:#0a0a0f;color:#ddd;overflow-x:hidden}
-    #backgroundCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:-1}
-    #hamburger{position:fixed;top:18px;left:20px;z-index:1200;font-size:1.9rem;line-height:1;cursor:pointer;color:#fff;user-select:none;transition:transform .3s ease;}
-    #hamburger.active{transform:rotate(90deg)}
-    #navbar{position:fixed;top:0;left:0;width:100%;height:60px;padding:0 1.5rem 0 70px;display:flex;align-items:center;justify-content:flex-end;gap:2.5rem;background:rgba(15,15,25,.86);backdrop-filter:blur(6px);transform:translateY(-100%);transition:transform .35s ease;z-index:1100;}
-    #navbar.show{transform:translateY(0)}
-    #navbar a{color:#ccc;text-decoration:none;font-weight:600;transition:color .25s}
-    #navbar a:hover{color:#fff}
-    body.nav-visible{padding-top:60px;transition:padding-top .35s ease}
-    .container{max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;text-align:center}
-    .fade-slide{opacity:0;transform:translateY(20px);animation:fadeSlideUp 1s forwards ease-out}
-    .delay-1{animation-delay:.3s}.delay-2{animation-delay:.6s}.delay-3{animation-delay:.9s}.delay-4{animation-delay:1.2s}
-    @keyframes fadeSlideUp{to{opacity:1;transform:translateY(0)}}
-    h1.title{font-size:4rem;font-weight:700;color:#e0e0ff;margin:.2rem 0;text-shadow:0 0 12px #d76fff}
-    p.subtitle{font-size:1.4rem;color:#aaa;margin-bottom:2.5rem}
-    .executor-image{max-width:350px;width:100%;display:block;margin:0 auto 2.5rem;border-radius:16px;box-shadow:0 0 20px #ff29ffaa}
-    .btn-download{display:block;margin:0 auto 4rem;background:#7b36ff;color:#fff;font-weight:700;font-size:1.2rem;padding:.85rem 3rem;border-radius:30px;text-decoration:none;box-shadow:0 0 14px #9c61ff;transition:background .3s}
-    .btn-download:hover{background:#a263ff}
-    .developers{max-width:400px;margin:0 auto;text-align:left}
-    .dev-header{font-size:2rem;font-weight:700;color:#d792ff;text-align:center;margin:1rem 0}
-    .dev-card{position:relative;display:flex;align-items:center;gap:1rem;background:rgba(80,40,120,.3);padding:1rem 1.5rem;border-radius:12px;box-shadow:0 0 14px #b68bff55}
-    .dev-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #a080ff;background:#3a176a}
-    .dev-name{font-weight:700;font-size:1.2rem;color:#fff}
-    .dev-role{font-size:1rem;color:#b8a9d4}
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #ddd;
+      overflow-x: hidden;
+    }
+    #backgroundCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+    }
+    #hamburger {
+      position: fixed;
+      top: 18px; left: 20px;
+      z-index: 1200;
+      font-size: 1.9rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #fff;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    #hamburger.active {
+      transform: rotate(90deg);
+    }
+    #navbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 60px;
+      padding: 0 1.5rem 0 70px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 2.5rem;
+      background: rgba(15, 15, 25, 0.86);
+      backdrop-filter: blur(6px);
+      transform: translateY(-100%);
+      transition: transform 0.35s ease;
+      z-index: 1100;
+    }
+    #navbar.show {
+      transform: translateY(0);
+    }
+    #navbar a {
+      color: #ccc;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.25s;
+    }
+    #navbar a:hover {
+      color: #fff;
+    }
+    body.nav-visible {
+      padding-top: 60px;
+      transition: padding-top 0.35s ease;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      text-align: center;
+    }
+    .fade-slide {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeSlideUp 1s forwards ease-out;
+    }
+    .delay-1 { animation-delay: 0.3s; }
+    .delay-2 { animation-delay: 0.6s; }
+    .delay-3 { animation-delay: 0.9s; }
+    .delay-4 { animation-delay: 1.2s; }
+    @keyframes fadeSlideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    h1.title {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #e0e0ff;
+      margin: 0.2rem 0;
+      text-shadow: 0 0 12px #d76fff;
+    }
+    p.subtitle {
+      font-size: 1.4rem;
+      color: #aaa;
+      margin-bottom: 2.5rem;
+    }
+    .executor-image {
+      max-width: 350px;
+      width: 100%;
+      display: block;
+      margin: 0 auto 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #ff29ffaa;
+    }
+    .btn-download {
+      display: block;
+      margin: 0 auto 4rem;
+      background: #7b36ff;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0.85rem 3rem;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 0 14px #9c61ff;
+      transition: background 0.3s;
+    }
+    .btn-download:hover {
+      background: #a263ff;
+    }
+
+    /* New 3 boxes section */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .feature-box {
+      background: rgba(80, 40, 120, 0.3);
+      border-radius: 16px;
+      padding: 1.5rem 1rem 2rem;
+      flex: 1 1 260px;
+      box-shadow: 0 0 18px #b68bff55;
+      color: #ddd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+      transition: background 0.3s ease;
+    }
+    .feature-box:hover {
+      background: rgba(123, 54, 255, 0.5);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      fill: #b693ff;
+      transition: fill 0.25s;
+    }
+    .feature-box:hover .feature-icon {
+      fill: #e0d0ff;
+    }
+    .feature-title {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #e0e0ff;
+    }
+    .feature-desc {
+      font-size: 1rem;
+      color: #ccc;
+      line-height: 1.4;
+    }
+
+    /* Developers section */
+    .developers {
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .dev-header {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #d792ff;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .dev-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(80, 40, 120, 0.3);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 14px #b68bff55;
+    }
+    .dev-photo {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #a080ff;
+      background: #3a176a;
+    }
+    .dev-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .dev-role {
+      font-size: 1rem;
+      color: #b8a9d4;
+    }
 
     /* --- new icon-button styles --- */
-    .dev-links{position:absolute;bottom:12px;right:12px;display:flex;gap:10px}
-    .dev-link{width:34px;height:34px;border-radius:50%;background:rgba(80,40,120,.6);display:flex;align-items:center;justify-content:center;transition:background .25s}
-    .dev-link:hover{background:rgba(123,54,255,.85)}
-    .dev-link svg{width:20px;height:20px;fill:#b693ff;transition:fill .25s}
-    .dev-link:hover svg{fill:#e0d0ff}
+    .dev-links {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 10px;
+    }
+    .dev-link {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(80, 40, 120, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.25s;
+    }
+    .dev-link:hover {
+      background: rgba(123, 54, 255, 0.85);
+    }
+    .dev-link svg {
+      width: 20px;
+      height: 20px;
+      fill: #b693ff;
+      transition: fill 0.25s;
+    }
+    .dev-link:hover svg {
+      fill: #e0d0ff;
+    }
 
-    .faq-section{max-width:700px;margin:4rem auto}
-    .faq-header{font-size:2rem;font-weight:700;color:#d792ff;text-align:center;margin-bottom:1.5rem}
-    .faq-item{background:rgba(50,25,75,.4);border-radius:10px;margin-bottom:1rem;overflow:hidden;box-shadow:0 0 8px #b381ff50}
-    .faq-question{padding:1rem 1.5rem;font-weight:600;font-size:1.1rem;cursor:pointer;position:relative;color:#e0d9ff}
-    .faq-question::after{content:'+';position:absolute;right:1.5rem;font-size:1.4rem;font-weight:700;transition:transform .3s}
-    .faq-item.open .faq-question::after{transform:rotate(45deg)}
-    .faq-answer{max-height:0;padding:0 1.5rem;opacity:0;color:#ccc;font-size:1rem;line-height:1.5;transition:max-height .4s,padding .4s,opacity .5s .15s}
-    .faq-item.open .faq-answer{max-height:220px;padding:1rem 1.5rem;opacity:1}
-    footer{text-align:center;padding:1.5rem;color:#666;font-size:.9rem}
-    @media(max-width:600px){
-      .dev-card{flex-direction:column;text-align:center}
-      .developers{max-width:90%}
+    .faq-section {
+      max-width: 700px;
+      margin: 4rem auto;
+    }
+    .faq-header {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #d792ff;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item {
+      background: rgba(50, 25, 75, 0.4);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 0 8px #b381ff50;
+    }
+    .faq-question {
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      color: #e0d9ff;
+    }
+    .faq-question::after {
+      content: '+';
+      position: absolute;
+      right: 1.5rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      padding: 0 1.5rem;
+      opacity: 0;
+      color: #ccc;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: max-height 0.4s, padding 0.4s, opacity 0.5s 0.15s;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 220px;
+      padding: 1rem 1.5rem;
+      opacity: 1;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .dev-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      .developers {
+        max-width: 90%;
+      }
+      .features {
+        flex-direction: column;
+      }
+      .feature-box {
+        flex: none;
+        width: 90%;
+        margin: 0 auto 1.5rem;
+      }
     }
   </style>
 </head>
@@ -61,13 +332,46 @@
   <div class="container">
     <h1 class="title fade-slide delay-1">Alia</h1>
     <p class="subtitle fade-slide delay-2">First true-keyless iOS executor</p>
-    <img src="IMG_5064.jpeg" alt="Alia Executor" class="executor-image fade-slide delay-3">
+    <img src="IMG_5064.jpeg" alt="Alia Executor" class="executor-image fade-slide delay-3" />
     <a href="/download.html" class="btn-download fade-slide delay-4">Download</a>
+
+    <!-- New Features Boxes Section -->
+    <section class="features fade-slide delay-4" aria-label="Features">
+      <div class="feature-box">
+        <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <!-- Toolbox icon -->
+          <path d="M20 6h-3V4a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zM9 4h6v2H9V4zm11 14H4V8h16v10z"/>
+          <path d="M7 12h2v5H7zm4 0h2v5h-2z"/>
+        </svg>
+        <div class="feature-title">Gooning Engine</div>
+        <div class="feature-desc">The Gooning Engine allows for seamless lua injection into Roblox and for direct memory manipulation. It’s fast, high support and great for low end devices.</div>
+      </div>
+
+      <div class="feature-box">
+        <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <!-- Cloud download / update icon -->
+          <path d="M19.35 10.04A7.49 7.49 0 0 0 12 4a7.5 7.5 0 0 0-7.35 6.04A5.5 5.5 0 0 0 5.5 20h13a4.5 4.5 0 0 0 .85-9.96zM12 17v-5m-3 3 3 3 3-3" stroke="#b693ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <div class="feature-title">Weekly updates</div>
+        <div class="feature-desc">The Alia team pushes updates whenever required, often whenever Roblox updates their application.</div>
+      </div>
+
+      <div class="feature-box">
+        <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <!-- Key with X icon -->
+          <path d="M7 14a5 5 0 1 0 7-7l-3.5 3.5L7 14z" fill="none" stroke="#b693ff" stroke-width="2" stroke-linejoin="round"/>
+          <line x1="18" y1="6" x2="22" y2="10" stroke="#b693ff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="22" y1="6" x2="18" y2="10" stroke="#b693ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="feature-title">Keyless &amp; always free</div>
+        <div class="feature-desc">We know how difficult or annoying a key system is. Therefore, the only advertisement you will ever watch is to download the .ipa or such file. Thats it. No keys, no ads, no nothing.</div>
+      </div>
+    </section>
 
     <section class="developers fade-slide delay-4">
       <h2 class="dev-header">Developers</h2>
       <div class="dev-card">
-        <img src="your-photo.jpg" alt="ZodaciOS" class="dev-photo">
+        <img src="your-photo.jpg" alt="ZodaciOS" class="dev-photo" />
         <div>
           <div class="dev-name">ZodaciOS</div>
           <div class="dev-role">Main Developer</div>
@@ -134,28 +438,87 @@
   <footer>2025 – Alia. All rights reserved.</footer>
   <script>
     // FAQ toggle
-    document.querySelectorAll('.faq-question').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+    document.querySelectorAll('.faq-question').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
 
     // Nav / hamburger
-    const navbar=document.getElementById('navbar'),hamburger=document.getElementById('hamburger'),body=document.body;
-    const setPad=()=>body.classList.toggle('nav-visible',navbar.classList.contains('show'));
+    const navbar = document.getElementById('navbar'), hamburger = document.getElementById('hamburger'), body = document.body;
+    const setPad = () => body.classList.toggle('nav-visible', navbar.classList.contains('show'));
     setPad();
-    hamburger.addEventListener('click',()=>{navbar.classList.toggle('show');hamburger.classList.toggle('active');setPad();});
+    hamburger.addEventListener('click', () => {
+      navbar.classList.toggle('show');
+      hamburger.classList.toggle('active');
+      setPad();
+    });
 
     // Auto-hide nav on scroll
-    let lastY=window.scrollY;
-    window.addEventListener('scroll',()=>{const y=window.scrollY;if(y>lastY&&y>120){navbar.classList.remove('show');hamburger.classList.remove('active');}else if(y<lastY){navbar.classList.add('show');}lastY=y;setPad();});
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > lastY && y > 120) {
+        navbar.classList.remove('show');
+        hamburger.classList.remove('active');
+      } else if (y < lastY) {
+        navbar.classList.add('show');
+      }
+      lastY = y;
+      setPad();
+    });
 
     // Animated wave background
-    (()=>{const c=document.getElementById('backgroundCanvas'),x=c.getContext('2d');let w,h;
-      const resize=()=>{w=innerWidth;h=innerHeight;c.width=w;c.height=h};
-      class Wave{constructor(A,L,s,y){this.A=A;this.L=L;this.s=s;this.y=y;this.p=0;}d(){this.p+=this.s;x.beginPath();x.moveTo(0,h/2);
-      for(let i=0;i<=w;i++){x.lineTo(i,h/2+this.A*Math.sin((2*Math.PI*i)/this.L+this.p)+this.y);}x.lineTo(w,h);x.lineTo(0,h);x.closePath();
-      const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(255,105,180,.32)');g.addColorStop(1,'rgba(255,105,180,0)');
-      x.fillStyle=g;x.shadowColor='rgba(255,105,180,.5)';x.shadowBlur=28;x.fill();}}
-      let waves;const init=()=>{waves=[new Wave(40,300,.02,0),new Wave(30,200,.015,20),new Wave(20,150,.01,-15)]};
-      const loop=()=>{x.clearRect(0,0,w,h);x.fillStyle='#0a0a0f';x.fillRect(0,0,w,h);waves.forEach(v=>v.d());requestAnimationFrame(loop)};
-      addEventListener('resize',()=>{resize();init()});resize();init();loop();
+    (() => {
+      const c = document.getElementById('backgroundCanvas'), x = c.getContext('2d');
+      let w, h;
+      const resize = () => {
+        w = innerWidth;
+        h = innerHeight;
+        c.width = w;
+        c.height = h;
+      };
+      class Wave {
+        constructor(A, L, s, y) {
+          this.A = A;
+          this.L = L;
+          this.s = s;
+          this.y = y;
+          this.p = 0;
+        }
+        d() {
+          this.p += this.s;
+          x.beginPath();
+          x.moveTo(0, h / 2);
+          for (let i = 0; i <= w; i++) {
+            x.lineTo(i, h / 2 + this.A * Math.sin((2 * Math.PI * i) / this.L + this.p) + this.y);
+          }
+          x.lineTo(w, h);
+          x.lineTo(0, h);
+          x.closePath();
+          const g = x.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, 'rgba(255,105,180,.32)');
+          g.addColorStop(1, 'rgba(255,105,180,0)');
+          x.fillStyle = g;
+          x.shadowColor = 'rgba(255,105,180,.5)';
+          x.shadowBlur = 28;
+          x.fill();
+        }
+      }
+      let waves;
+      const init = () => {
+        waves = [new Wave(40, 300, 0.02, 0), new Wave(30, 200, 0.015, 20), new Wave(20, 150, 0.01, -15)];
+      };
+      const loop = () => {
+        x.clearRect(0, 0, w, h);
+        x.fillStyle = '#0a0a0f';
+        x.fillRect(0, 0, w, h);
+        waves.forEach(v => v.d());
+        requestAnimationFrame(loop);
+      };
+      addEventListener('resize', () => {
+        resize();
+        init();
+      });
+      resize();
+      init();
+      loop();
     })();
   </script>
 </body>
